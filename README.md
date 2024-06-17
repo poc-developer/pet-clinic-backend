@@ -4,7 +4,15 @@ This is a Flask-based REST API project that manages owners ad their pets. An own
 but each pet belongs to one owner. The API provides endpoints to create new owner, retrieve all owner details along with 
 their pets or matching owners with the last name provided, and update existing owner's details.
 
-# Getting started
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Setup Environments](#setup-environments)
+- [Setup Database](#set-up-database)
+- [API Endpoints](#api-enpoints)
+- [Running Tests](#running-tests)
+- [Running Application](#running-application)
+- [Project Structure](#pro)
+# Getting Started
 **Prerequisites**
 The following items should be installed in your system:
 1. Python 3.12.0 or later
@@ -14,35 +22,38 @@ The following items should be installed in your system:
 5. PostgreSQL 16.3 or later
 6. pgAdmin (GUI tool)
 
-**Steps**
-1. **On the command line, clone the repository:**
+# Setup Environments
+1. **Clone the repository:**
 ```sh
     git clone https://github.com/poc-developer/pet-clinic-backend.git
+```
+2. **Redirect to the cloned repository:**
+```sh
     cd pet-clinic-backend
 ```
-2. **Create a virtual environment on VS Code:**
+3. **Create a virtual environment on VS Code:**
 ```sh
     python -m venv venv
 ```
-3. **Activate the virtual environment:**
-- On Windows:
+4. **Activate the virtual environment:**
 ```sh
     .venv/Scripts/activate
 ```
-4. **Install the dependencies:**
+5. **Install the dependencies:**
 ```sh
     pip install -r requirements.txt
 ```
 
-# Set up database 
-It is important to setup a relational database to store data. For local development, you should either use an SQLite db or install PostreSQL and set the `DATABASE_URL` environment variable.
-### Using pgAdmin setup database
+# Setup Database 
+It is important to setup a relational database to store data. For this application, SQLite db has been used for testing and PostreSQL has been use for deployment. The `DATABASE_URL` environment variable has been store in `.env`.
+
+### Using pgAdmin setup database:
 
 1. **Download and install pgAdmin:**
-- You can download pgAdmin freom the [pgAdmin official website](https://www.pgadmin.org/download/)
+- You can download pgAdmin from the [pgAdmin official website](https://www.pgadmin.org/download/)
 
 2. **Create a new server in pgAdmin:**
-- Opn pgAdmin and right-click on "Servers" in the left navigation panel. 
+- Open pgAdmin and right-click on "Servers" in the left navigation panel. 
 - Click "Create" and then "Server".
 
 3. **Configure the new server:**
@@ -65,20 +76,9 @@ It is important to setup a relational database to store data. For local developm
 
 ### Accessing the Database in Python 
 Once the database is set up, you need to ensure that the `DATABASE_URL` environment variable in `.env` is properly set. This ensure
-it point to your PostgreSQL database. 
+it point to your PostgreSQL database. The model has been configured in `models.py`. 
 
-**Run the application:**
-To run the application, make sure you navigate to the correct directory.
-```sh
-python -m app.main
-```
-
-**Access the API:**
-The API will be available at `http://127.0.0.1:8081`. This API can be access using Postman. 
-
-
-## API Enpoints
-
+# API Enpoints
 ### GET Owners
 - **URL**: `/v1/owners`
 - **Method**: `GET`
@@ -172,4 +172,39 @@ suitable for fast, isolated test without the need for a persistent state.
 **Run the tests with pytest** 
 ```sh
     python -m pytest --cov=app tests/
+```
+
+# Running Application
+To run the application, make sure you navigate to the correct directory.
+1. **Run the command line in powershell**
+```sh
+    python -m app.main
+```
+
+2. **Access the API:**
+The API will be available at `http://127.0.0.1:8081`. This API can be access using Postman. 
+
+# Project Structure
+```
+|-.venv
+|-app
+|   |-logging_config.py
+|   |-main.py
+|   |-model.config.py
+|   |-models.py
+|   |-routes.py
+|-sql
+|   |-DB_users.sql
+|   |-owners.sql
+|   |-pets.sql
+|   |-schema.sql
+|-tests
+|   |-conftest.py
+|   |-functional
+|       |-test_routes.py
+|   |-unit
+|       |-test_models.py
+|-.env
+|-README.md
+|-requirements.txt
 ```
