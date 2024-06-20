@@ -9,4 +9,4 @@ def test_new_owner(new_owner):
     assert new_owner.name == 'John De'
     assert new_owner.address == '123 Main St'
     assert new_owner.city == 'Somewhere'
-    assert new_owner.telephone == '1111112111'
+    assert new_owner.telephone == '126543651423'

@@ -1,0 +1,243 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "Pet Clinic API",
+        "version": "1.0.0",
+        "title": "Pet Clinic API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "tags": [
+        {
+            "name": "Owner",
+            "description": "Everything about Owner"
+        },
+        {
+            "name": "Pet",
+            "description": "Everything about Pet"
+        }
+    ],
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "id":{
+                "type" : "integer",
+                "properties" : {
+                    "name" : {
+                        "type" : "integer"
+                    }
+                }
+            },
+            "ownerRequestPostBody": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "address": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "city": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "telephone": {
+                        "format": "string",
+                        "type": "string"
+                    }
+                }
+            },
+            "ownerRequest":{
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "format": "string",
+                        "type" : "string"
+                    },
+                    "address": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "city": {
+                        "format": "string",
+                        "type": "string"
+                    },
+                    "telephone": {
+                        "format": "string",
+                        "type": "string"
+                    }
+                }
+            },
+            "lastName":{
+                "type" : "string",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "update":{
+                "type": "object",
+                "properties" : {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "telephone": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/v1/owners": {
+            "get": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "Get all Owners from the Database",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/owners/{lastName}": {
+            "get" :{
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "Get Owners With Matching Last Name",
+                "parameters": [
+                    {
+                        "name": "lastName",
+                        "in": "path",
+                        "description": "Get Owners With Matching Last Name",
+                        "required": true,
+                        "type": "string",
+                        "schema" : {
+                            "$ref": "#/components/schemas/lastName"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/owners/new": {
+            "post": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "Add New Owner To Database",
+                "requestBody": {
+                    "description": "Add New Owner To Database",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ownerRequestPostBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/owners/{id}/edit": {
+            "put": {
+                "tags": [
+                    "Owner"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Owner Id To Update",
+                        "required": true,
+                        "type": "integer",
+                        "schema" : {
+                            "$ref": "#/components/schemas/id"
+                        }
+                    }
+                ],
+                "summary": "Update Owner's Details",
+                "requestBody": {
+                    "description": "Update Existing Owner On Database",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/update"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "schema": {
+                            "$ref": "#/components/schemas/ownerRequest"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -82,9 +82,36 @@ it point to your PostgreSQL database. The model has been configured in `models.p
 ### GET Owners
 - **URL**: `/v1/owners`
 - **Method**: `GET`
-- **Descriptions**: Retrieves all owners or owners with a specific last name.
+- **Descriptions**: Retrieves all owners.
+- **Response**:
+    ```json
+    {
+        "data":[
+            {
+                "id":1,
+                "name": "John Doe",
+                "address": "123 Main St",
+                "city": "Somewhere",
+                "telephone": "1111111111",
+                "pets": [
+                    {
+                        "id": 1,
+                        "name": "Kitty",
+                        "birth_date": "01 May 2020",
+                        "type": "cat"
+                    },...
+                ] 
+            },...
+        ]
+    }
+    ```
+
+### GET Single Owner
+- **URL**: `/v1/owners/<lastName>`
+- **Method**: `GET`
+- **Descriptions**: Retrieves owners with a matching last name.
 - **Parameters**:
-    - `lastName` (optional): The last name to filter owners.
+    - `lastName`: The last name to filter owners.
 - **Response**:
     ```json
     {
@@ -188,11 +215,17 @@ The API will be available at `http://127.0.0.1:8081`. This API can be access usi
 ```
 |-.venv
 |-app
-|   |-logging_config.py
+|   |-configs
+|       |-logging_config.py
+|       |-model_config.py
+|   |-models
+|       |-model.py
+|   |-routes
+|       |-owners_routes.py
+|       |-pets_routes.py
+|   |-static
+|       |-swagger.json
 |   |-main.py
-|   |-model.config.py
-|   |-models.py
-|   |-routes.py
 |-sql
 |   |-DB_users.sql
 |   |-owners.sql

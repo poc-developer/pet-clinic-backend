@@ -1,16 +1,13 @@
 """Routes to API Endpoints"""
-from flask import Blueprint, request, jsonify, current_app, url_for
+from flask import Blueprint, request, jsonify, current_app
 from sqlalchemy.exc import IntegrityError
-from app.models import db, Owner
-
-
+from app.models.model import db, Owner
 
 # Setup Blueprint
-bp = Blueprint('main', __name__)
-
+owners_bp = Blueprint('owners', __name__)
 
 # CREATE operation, Route to create new owner
-@bp.route("/v1/owners/new", methods=["POST"])
+@owners_bp.route("/v1/owners/new", methods=["POST"])
 def create_owners():
 
     """
@@ -77,13 +74,31 @@ def create_owners():
                     }})
     response.status_code = 201
     response.headers['Content-Type'] = 'application/json'
-    response.headers['Location']= url_for('main.get_owners')
+    #response.headers['Location']= url_for('owners.get_owners')
     return response
 
 
 # READ operation, Route to get all owners
-@bp.route("/v1/owners", methods=["GET"])
+@owners_bp.route("/v1/owners", methods=["GET"])
 def get_owners():
+    """
+    This endpoint retrieves the details of all owners from the database.
+
+    Returns:
+    - JSON response with all owners details and their pets. 
+    - Status code 200 on success.
+    """
+
+    current_app.logger.debug("GET Request Received For All Owners")
+
+    all_owner = Owner.query.all()
+    serialized_owners = [owner.serialize() for owner in all_owner]
+
+    current_app.logger.info("Returning All Owners")
+    return jsonify({'data': serialized_owners}), 200
+
+@owners_bp.route("/v1/owners/<string:lastName>", methods=["GET"])
+def get_owner(lastName):
 
     """
     This endpoint retrieves the details of an owner identified by the provided last name.
@@ -94,24 +109,14 @@ def get_owners():
     - lastName (query parameter, optional): Last name of the owner(s) to filter by.
     
     Returns:
-    - JSON response with the owner details and their pets. If lastNmae is provided,
+    - JSON response with the owner details and their pets. If lastName is provided,
       return the owners with the matching last name; otherwise, returns all owners.
     - Status code 200 on success.
     - Status code 404 if owner not found.  
     """
 
-    lastName = request.args.get("lastName")
-
     current_app.logger.debug(
-        f"GET Request Received For Owners With Last Name: {lastName}")
-
-    if not lastName:
-
-        all_owner = Owner.query.all()
-        serialized_owners = [owner.serialize() for owner in all_owner]
-
-        current_app.logger.info("Returning All Owners")
-        return jsonify({'data': serialized_owners}), 200
+        f"GET Request Received For Owners With Matching Last Name: {lastName}")
 
     owners = Owner.query.filter(Owner.name.ilike(f'%{lastName}%')).all()
     if owners:
@@ -129,7 +134,7 @@ def get_owners():
                     }), 404
 
 # UPDATE operation, Route to update owner's detail
-@bp.route("/v1/owners/<int:owner_id>/edit", methods=["PUT"])
+@owners_bp.route("/v1/owners/<int:owner_id>/edit", methods=["PUT"])
 def update_owner(owner_id):
 
     """
@@ -163,9 +168,13 @@ def update_owner(owner_id):
                             "message": "Owner Not Found! Please Enter A Valid ID!"}
                         }), 404
 
-    firstName = data.get('firstName')
-    lastName = data.get("lastName")
-    name = f'{firstName} {lastName}'
+    firstName, lastName = owner.name.split(' ', 1)
+    if (data.get('firstName') and data.get("lastName"))is not None:
+        name = f'{firstName} {lastName}'
+    elif data.get('firstName') is not None and data.get("lastName") is None:
+        name = f'{data.get('firstName')} {lastName}'
+    elif data.get('firstName') is None and data.get("lastName") is not None:
+        name = f'{firstName} {data.get("lastName")}'
 
     owner.name = name
     owner.address = data.get('address', owner.address)

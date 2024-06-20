@@ -7,7 +7,7 @@ def setup_logging(app):
     The function write log for the code when the application is running.
     """
     # Define the logger
-    logger = logging.getLogger('SpringPetClinic')
+    logger = logging.getLogger('PetClinic')
     logger.setLevel(logging.DEBUG)
 
     # Define the file handler to log to a file in the logs directory
