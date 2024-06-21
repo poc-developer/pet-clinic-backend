@@ -7,7 +7,16 @@ pets_bp = Blueprint('pets', __name__)
 
 @pets_bp.route('/v1/pets', methods=['GET'])
 def get_all_pets():
+    """
+    This endpoint retrieves the details of all pets from the database.
 
-    pets = Pet.query.all()
+    Returns:
+    - JSON response with all pets details. 
+    - Status code 200 on success.
+    """
     current_app.logger.debug("GET Request Received For All Pets")
-    return jsonify([pet.serialize() for pet in pets])
+    pets = Pet.query.all()
+    serialized_pets = [pet.serialize() for pet in pets]
+
+    current_app.logger.debug("GET Request Received For All Pets")
+    return jsonify({"data": serialized_pets}), 200

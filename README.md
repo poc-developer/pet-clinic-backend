@@ -142,7 +142,6 @@ it point to your PostgreSQL database. The model has been configured in `models.p
 - **Request Body**:
     ```json
     {
-        "id":1,
         "firstName": "John",
         "lastName": "Doe",
         "address": "123 Main St",
@@ -170,7 +169,6 @@ it point to your PostgreSQL database. The model has been configured in `models.p
 - **Request Body**:
     ```json
     {
-        "id":1,
         "firstName": "John",
         "lastName": "Smith",
         "address": "123 Main St",
@@ -205,7 +203,7 @@ suitable for fast, isolated test without the need for a persistent state.
 To run the application, make sure you navigate to the correct directory.
 1. **Run the command line in powershell**
 ```sh
-    python -m app.main
+    python run.py
 ```
 
 2. **Access the API:**

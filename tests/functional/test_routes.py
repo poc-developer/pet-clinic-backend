@@ -35,7 +35,7 @@ def test_create_owner_success(test_client):
         'lastName': 'Doe',
         'address': '345 Main St',
         'city': 'Anywhere',
-        'telephone': '2342312'
+        'telephone': '12345678'
     })
     assert response.status_code == 201
     data = response.get_json()
@@ -54,7 +54,7 @@ def test_create_owner_duplicate_telephone(test_client):
         'lastName': 'Doe',
         'address': '345 Main St',
         'city': 'Anywhere',
-        'telephone': '2342344322'
+        'telephone': '23423443322'
     })
     assert response.status_code == 400
     data = response.get_json()

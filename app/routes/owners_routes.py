@@ -91,8 +91,8 @@ def get_owners():
 
     current_app.logger.debug("GET Request Received For All Owners")
 
-    all_owner = Owner.query.all()
-    serialized_owners = [owner.serialize() for owner in all_owner]
+    owners = Owner.query.all()
+    serialized_owners = [owner.serialize() for owner in owners]
 
     current_app.logger.info("Returning All Owners")
     return jsonify({'data': serialized_owners}), 200

@@ -1,6 +1,6 @@
 """This is a fixture models"""
 import pytest
-from app.main import create_app
+from run import create_app
 from app.models.model import db, Owner
 from app.configs.model_config import TestingConfig
 

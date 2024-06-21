@@ -8,3 +8,4 @@ psycopg2-binary==2.9.9
 pytest==8.2.2
 pytest-cov==5.0.0
 flask_swagger_ui==4.11.1
+flask2postman==1.4.4
