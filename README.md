@@ -37,7 +37,7 @@ The following items should be installed in your system:
 ```
 4. **Activate the virtual environment:**
 ```sh
-    .venv/Scripts/activate
+    venv/Scripts/activate
 ```
 5. **Install the dependencies:**
 ```sh
@@ -221,9 +221,9 @@ The API will be available at `http://127.0.0.1:8081`. This API can be access usi
 |   |-routes
 |       |-owners_routes.py
 |       |-pets_routes.py
-|   |-static
-|       |-swagger.json
 |   |-main.py
+|-static
+|   |-swagger.json
 |-sql
 |   |-DB_users.sql
 |   |-owners.sql
@@ -238,4 +238,5 @@ The API will be available at `http://127.0.0.1:8081`. This API can be access usi
 |-.env
 |-README.md
 |-requirements.txt
+|-run.py
 ```
