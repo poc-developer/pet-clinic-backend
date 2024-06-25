@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+    
+    environment {
+        VENV_DIR = 'venv'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/poc-developer/pet-clinic-backend', branch: 'main'
+            }
+        }
+        stage('Create Virtual Environment ') {
+            steps {
+                echo '=== Creating virtual environment ==='
+                bat 'cd pet-clinic-backend'
+                bat 'python -m venv venv'
+                echo '=== Created virtual environment ==='
+            }
+        }
+
+        stage('Activate Environment') {
+            steps {
+                echo '=== Activating virtual environment ==='
+                bat 'cd venv/Scripts'
+                bat 'activate'
+                echo '=== Activated virtual environment ==='
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                echo '=== Installing dependencies ==='
+                bat 'cd ../'
+                bat 'cd ../'
+                bat 'pip install -r requirements.txt'
+                echo '=== Dependencies Installed ==='
+            }
+        }
+
+        // stage('ServerStart') {
+        //     steps {
+        //         echo '=== Starting Development Server ==='
+        //         bat 'ng serve --port 4200 &'              
+        //         echo '=== Started Development Server ==='
+        //     }
+        // }
+
+        // stage('Test') {
+        //     steps {
+        //         echo '=== Running Unit Test ==='
+        //         bat 'ng test'
+        //         echo '=== Completed Unit Test ==='
+        //     }
+        // }
+
+    }
+    post {
+        success {
+            echo 'Build successful'
+        }
+        failure {
+            echo 'Build failed'
+        }
+    }
+}
