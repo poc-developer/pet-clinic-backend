@@ -2,7 +2,11 @@ pipeline {
     agent any
     
     environment {
-        VENV_DIR = 'venv'
+        DB_USER = 'venv'
+        DB_PW = 'admin'
+        DB_PORT = '5432'
+        DB_NAME = 'PetClinicDB'
+        
     }
 
     stages {
@@ -36,6 +40,18 @@ pipeline {
                 bat 'cd ../'
                 bat 'pip install -r requirements.txt'
                 echo '=== Dependencies Installed ==='
+            }
+        }
+
+        stage('Connect Database') {
+            steps {
+                echo '=== Connecting Database ==='
+                bat '$filePath = '.env'
+                bat '$content = Get-Content $filePath -Raw'
+                bat '$content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
+                'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')'
+                bat 'Set-Content -Path $filePath -Value $content -Encoding UTF8'
+                echo '=== Connected Database ==='
             }
         }
 
