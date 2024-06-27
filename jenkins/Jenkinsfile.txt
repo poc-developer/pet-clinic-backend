@@ -27,8 +27,7 @@ pipeline {
         stage('Activate Environment') {
             steps {
                 echo '=== Activating virtual environment ==='
-                bat 'cd venv/Scripts'
-                bat 'activate'
+                // bat 'cd venv/Scripts/activate'
                 echo '=== Activated virtual environment ==='
             }
         }
@@ -36,8 +35,8 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo '=== Installing dependencies ==='
-                bat 'cd ../'
-                bat 'cd ../'
+                // bat 'cd ../'
+                // bat 'cd ../'
                 bat 'pip install -r requirements.txt'
                 echo '=== Dependencies Installed ==='
             }
