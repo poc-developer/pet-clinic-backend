@@ -62,15 +62,13 @@ pipeline {
             steps {
                 echo '=== Connecting Database ==='
                 script {
-                    def content = readFile('.venv').trim()
-                    content = content.replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', '${dbUrl}')
-                    writeFile file: '.venv', text: content
+                    // def content = readFile('.venv').trim()
+                    // content = content.replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', '${dbUrl}')
+                    // writeFile file: '.venv', text: content
                 }
                 echo '=== Connected Database ==='
             }
         }
-
-        
 
     }
     post {
