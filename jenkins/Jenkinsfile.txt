@@ -52,11 +52,18 @@ pipeline {
         stage('Connect Database') {
             steps {
                 echo '=== Connecting Database ==='
-                bat '$filePath = '.env''
-                bat '$content = Get-Content $filePath -Raw'
-                bat '$content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
-                'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')'
-                bat 'Set-Content -Path $filePath -Value $content -Encoding UTF8'
+                def filePath = '.env'
+                def psCommand = """
+                    $content = Get-Content $filePath -Raw
+                    $content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
+                'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')
+                    Set-Content -Path $filePath -Value $content -Encoding UTF8
+                """.stripIndent()
+
+                bat """
+                    powershell -Command "${psCommand}"
+                """
+                
                 echo '=== Connected Database ==='
             }
         }
