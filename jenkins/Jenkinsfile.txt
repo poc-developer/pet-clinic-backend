@@ -43,46 +43,32 @@ pipeline {
             }
         }
 
-        stage('DB Url') {
-            steps {
-                echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
-            }          
-        }
-
-        stage('Connect Database') {
-            steps {
-                echo '=== Connecting Database ==='
-                def filePath = '.env'
-                def psCommand = """
-                    $content = Get-Content $filePath -Raw
-                    $content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
-                'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')
-                    Set-Content -Path $filePath -Value $content -Encoding UTF8
-                """.stripIndent()
-
-                bat """
-                    powershell -Command "${psCommand}"
-                """
-                
-                echo '=== Connected Database ==='
-            }
-        }
-
-        // stage('ServerStart') {
+        // stage('DB Url') {
         //     steps {
-        //         echo '=== Starting Development Server ==='
-        //         bat 'ng serve --port 4200 &'              
-        //         echo '=== Started Development Server ==='
+        //         echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
+        //     }          
+        // }
+
+        // stage('Connect Database') {
+        //     steps {
+        //         echo '=== Connecting Database ==='
+        //         def filePath = '.env'
+        //         def psCommand = """
+        //             $content = Get-Content $filePath -Raw
+        //             $content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
+        //         'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')
+        //             Set-Content -Path $filePath -Value $content -Encoding UTF8
+        //         """.stripIndent()
+
+        //         bat """
+        //             powershell -Command "${psCommand}"
+        //         """
+
+        //         echo '=== Connected Database ==='
         //     }
         // }
 
-        // stage('Test') {
-        //     steps {
-        //         echo '=== Running Unit Test ==='
-        //         bat 'ng test'
-        //         echo '=== Completed Unit Test ==='
-        //     }
-        // }
+        
 
     }
     post {
