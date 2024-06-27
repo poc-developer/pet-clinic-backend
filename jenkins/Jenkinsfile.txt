@@ -2,10 +2,10 @@ pipeline {
     agent any
     
     environment {
-        DB_USER = 'postgres'
-        DB_PW = 'admin'
-        DB_PORT = '5432'
-        DB_NAME = 'PetClinicDB'
+        DB_USER = credentials('DB_USER')
+        DB_PW = credentials('DB_PW')
+        DB_PORT = credentials('DB_PORT')
+        DB_NAME = credentials('DB_NAME')
         
     }
 
@@ -50,7 +50,11 @@ pipeline {
 
         stage('DB Url') {
             steps {
-                echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
+                script {
+                    def dbUrl = "postgresql://${env.DB_USER}:${env.DB_PW}@localhost:${env.DB_PORT}/${env.DB_NAME}"
+
+                }
+                echo "Database Connection URL: ${dbUrl}"
             }          
         }
 
@@ -58,16 +62,9 @@ pipeline {
             steps {
                 echo '=== Connecting Database ==='
                 script {
-                    def filePath = '.env'
-                    def psCommand = """
-                        $content = Get-Content $filePath -Raw
-                        $content = $content -replace 'postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME'
-                        Set-Content -Path $filePath -Value $content -Encoding UTF8
-                    """.stripIndent()
-
-                    bat """
-                        powershell -Command "${psCommand}"
-                    """
+                    def content = readFile('.venv').trim()
+                    content = content.replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', '${dbUrl}')
+                    writeFile file: '.venv', text: content
                 }
                 echo '=== Connected Database ==='
             }
