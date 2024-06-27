@@ -19,7 +19,6 @@ pipeline {
             steps {
                 script {
                     echo '=== Creating virtual environment ==='
-                    bat 'cd pet-clinic-backend'
                     bat 'python -m venv venv'
                     echo '=== Created virtual environment ==='
                 }
