@@ -6,6 +6,7 @@ pipeline {
         DB_PW = credentials('DB_PW')
         DB_PORT = credentials('DB_PORT')
         DB_NAME = credentials('DB_NAME')
+        dbUrl = "postgresql://${DB_USER}:${DB_PW}@localhost:${DB_PORT}/${DB_NAME}"
         
     }
 
@@ -51,10 +52,9 @@ pipeline {
         stage('DB Url') {
             steps {
                 script {
-                    def dbUrl = "postgresql://${env.DB_USER}:${env.DB_PW}@localhost:${env.DB_PORT}/${env.DB_NAME}"
-
+                    echo "Database Connection URL: ${env.dbUrl}"
                 }
-                echo "Database Connection URL: ${dbUrl}"
+                
             }          
         }
 
