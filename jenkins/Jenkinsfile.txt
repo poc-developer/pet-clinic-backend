@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DB_USER = 'venv'
+        DB_USER = 'postgres'
         DB_PW = 'admin'
         DB_PORT = '5432'
         DB_NAME = 'PetClinicDB'
@@ -18,7 +18,7 @@ pipeline {
         stage('Create Virtual Environment ') {
             steps {
                 echo '=== Creating virtual environment ==='
-                // bat 'cd pet-clinic-backend'
+                bat 'cd pet-clinic-backend'
                 bat 'python -m venv venv'
                 echo '=== Created virtual environment ==='
             }
@@ -26,46 +26,46 @@ pipeline {
 
         stage('Activate Environment') {
             steps {
-                echo '=== Activating virtual environment ==='
-                // bat 'cd venv/Scripts/activate'
-                echo '=== Activated virtual environment ==='
+                echo '=== Activating python environment ==='
+                bat 'call venv\\Scripts\\activate'
+                echo '=== Activated python environment ==='
             }
         }
 
         stage('Install dependencies') {
             steps {
                 echo '=== Installing dependencies ==='
-                // bat 'cd ../'
-                // bat 'cd ../'
+                bat 'cd ../'
+                bat 'cd ../'
                 bat 'pip install -r requirements.txt'
                 echo '=== Dependencies Installed ==='
             }
         }
 
-        // stage('DB Url') {
-        //     steps {
-        //         echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
-        //     }          
-        // }
+        stage('DB Url') {
+            steps {
+                echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
+            }          
+        }
 
-        // stage('Connect Database') {
-        //     steps {
-        //         echo '=== Connecting Database ==='
-        //         def filePath = '.env'
-        //         def psCommand = """
-        //             $content = Get-Content $filePath -Raw
-        //             $content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
-        //         'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')
-        //             Set-Content -Path $filePath -Value $content -Encoding UTF8
-        //         """.stripIndent()
+        stage('Connect Database') {
+            steps {
+                echo '=== Connecting Database ==='
+                def filePath = '.env'
+                def psCommand = """
+                    $content = Get-Content $filePath -Raw
+                    $content = $content.Replace('postgresql://postgres:Bzgpvq86daxLK7Z@localhost:5432/PetClinicDB', 
+                'postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME')
+                    Set-Content -Path $filePath -Value $content -Encoding UTF8
+                """.stripIndent()
 
-        //         bat """
-        //             powershell -Command "${psCommand}"
-        //         """
+                bat """
+                    powershell -Command "${psCommand}"
+                """
 
-        //         echo '=== Connected Database ==='
-        //     }
-        // }
+                echo '=== Connected Database ==='
+            }
+        }
 
         
 
