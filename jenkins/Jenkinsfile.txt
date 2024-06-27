@@ -43,6 +43,12 @@ pipeline {
             }
         }
 
+        stage('DB Url') {
+            steps {
+                echo "Database Connection URL: postgresql://$DB_USER:$DB_PW@localhost:$DB_PORT/$DB_NAME"
+            }          
+        }
+
         stage('Connect Database') {
             steps {
                 echo '=== Connecting Database ==='
